@@ -25,7 +25,7 @@ const main = async () => {
   })
   puppeteerExtra.use(anonymizeUserAgentPlugin)
   const browser = await puppeteerExtra.launch({
-    executablePath: chromiumPath,
+    // executablePath: chromiumPath,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
     headless: true, // Set to false to see the browser in action
   });
