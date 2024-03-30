@@ -8,6 +8,7 @@ console.log("we;come to the new life...");
 const chromiumPath = "C:/Program Files/Google/Chrome/Application/chrome.exe";
 const app = require("express")();
 const Mailjs=require('@cemalgnlts/mailjs')
+const UserAgent=require('user-agents')
 let imageURL=new Blob()
 
 // Register Puppeteer-extra Stealth Plugin
@@ -15,7 +16,14 @@ puppeteerExtra.use(StealthPlugin());
 // let refcode="https://handydatas.com/register/bellohabib682r7dhrv694"
 const main = async () => {
   console.log("initializing the browser...");
-
+  const userAgent=new UserAgent({platform:'MacIntel',deviceCategory:'desktop'})
+  const userAgentStr=userAgent.toString()
+  const anonymizeUserAgentPlugin=require('puppeteer-extra-plugin-anonymize-ua')({
+    customFn:()=>userAgentStr,
+    stripHeadless:true,
+    makeWindows:false,
+  })
+  puppeteerExtra.use(anonymizeUserAgentPlugin)
   const browser = await puppeteerExtra.launch({
     // executablePath: chromiumPath,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
