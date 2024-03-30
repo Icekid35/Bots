@@ -129,12 +129,16 @@ console.log(good)
 
     const count = 40;
     while(true) {
+      try{
       await Work();
       console.log("save to exit...");
-    }
+      }catch(err){
+        console.log(err)
+      }}
   } catch (err) {
     console.log(err);
   } finally {
+    console.log("closing browser")
     browser.close();
   }
 };
