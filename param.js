@@ -11,7 +11,6 @@ const Mailjs=require('@cemalgnlts/mailjs')
 
 // Register Puppeteer-extra Stealth Plugin
 puppeteerExtra.use(StealthPlugin());
-// let refcode="https://handydatas.com/register/bellohabib682r7dhrv694"
 const main = async () => {
   console.log("initializing the browser...");
 
@@ -128,10 +127,10 @@ console.log(good)
     }
 
     const count = 40;
-    while(true) {
+     for(let i=0;i<=500;i++){
       try{
       await Work();
-      console.log("save to exit...");
+      console.log("save to exit..."+i);
       }catch(err){
         console.log(err)
       }}
