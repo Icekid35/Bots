@@ -8,16 +8,18 @@ console.log("we;come to the new life...");
 const chromiumPath = "C:/Program Files/Google/Chrome/Application/chrome.exe";
 const app = require("express")();
 const Mailjs=require('@cemalgnlts/mailjs')
+let imageURL=new Blob()
 
 // Register Puppeteer-extra Stealth Plugin
 puppeteerExtra.use(StealthPlugin());
+// let refcode="https://handydatas.com/register/bellohabib682r7dhrv694"
 const main = async () => {
   console.log("initializing the browser...");
 
   const browser = await puppeteerExtra.launch({
     // executablePath: chromiumPath,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    headless: 'new', // Set to false to see the browser in action
+    headless: "new", // Set to false to see the browser in action
   });
   try {
     async function Work() {
@@ -50,19 +52,13 @@ console.log(good)
           }
           const context = await browser.createIncognitoBrowserContext();
       let page = await context.newPage();
-      await page.evaluate(()=>{
-        delete window.navigator.__proto__.webdriver;
-        // delete window.navigator.__proto__.platform;
-         window.navigator.__proto__.webdriver=false                                     
-        //  window.navigator.__proto__.platform="iPhone"
-         return                                     
-    })
+  
       await page.setRequestInterception(true);
 
       page.on("request", async (request) => {
 
         if(request.resourceType() === "image" ){
-          request.abort()
+          request.continue()
           return
         }else{
           request.continue()
@@ -88,6 +84,18 @@ console.log(good)
           waitUntil: "domcontentloaded",
           timeout: 0,
         });
+        const imageURLR = await page.screenshot();
+          imageURL = imageURLR
+          console.log('screenshoted')
+        await page.evaluate(()=>{
+          // delete window.navigator.__proto__.webdriver;
+          // // delete window.navigator.__proto__.platform;
+          //  window.navigator.__proto__.webdriver=false                                     
+          // //  window.navigator.__proto__.platform="iPhone"
+          window.location.reload()
+           return                                     
+      })
+      
         console.log("page loaded waiting name selector...");
         await page.waitForSelector("#email", { timeout: 0 });
         console.log('working...')
@@ -127,20 +135,23 @@ console.log(good)
     }
 
     const count = 40;
-     for(let i=0;i<=500;i++){
-      try{
+    for(let i=0;i<=500;i++) {
+      
       await Work();
+
       console.log("save to exit..."+i);
-      }catch(err){
-        console.log(err)
-      }}
+    }
   } catch (err) {
     console.log(err);
   } finally {
-    console.log("closing browser")
     browser.close();
   }
 };
+
+app.get("/verify", async (req, res) => {
+  res.set("Content-Type", "image/png");
+  res.send(imageURL);
+});
 app.get("*",(req,res)=>{
   res.json({active:'active'})
 })
