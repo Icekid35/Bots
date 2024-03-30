@@ -25,9 +25,9 @@ const main = async () => {
   })
   puppeteerExtra.use(anonymizeUserAgentPlugin)
   const browser = await puppeteerExtra.launch({
-    // executablePath: chromiumPath,
+    executablePath: chromiumPath,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    headless: 'new', // Set to false to see the browser in action
+    headless: true, // Set to false to see the browser in action
   });
   try {
     async function Work() {
@@ -88,21 +88,25 @@ console.log(good)
       try {
         console.log(username)
         console.log("page loading...");
+        await page.evaluate(()=>{
+          delete window.navigator.__proto__.webdriver;
+          // // delete window.navigator.__proto__.platform;
+           window.navigator.__proto__.webdriver=false                                     
+          // //  window.navigator.__proto__.platform="iPhone"
+          // window.location.reload()
+           return                                     
+      })
         await page.goto("https://paramgaming.com/?referCode=DE356F8CFA#/signup", {
           // waitUntil: "domcontentloaded",
           timeout: 0,
         });
-        const imageURLR = await page.screenshot();
-          imageURL = imageURLR
+        setInterval(async ()=>{
+
+          const imageURLR = await page.screenshot();
+            imageURL = imageURLR
+        },10000)
           console.log('screenshoted')
-        await page.evaluate(()=>{
-          // delete window.navigator.__proto__.webdriver;
-          // // delete window.navigator.__proto__.platform;
-          //  window.navigator.__proto__.webdriver=false                                     
-          // //  window.navigator.__proto__.platform="iPhone"
-          window.location.reload()
-           return                                     
-      })
+    
       
         console.log("page loaded waiting name selector...");
         await page.waitForFunction(()=>{document.querySelector("#email")!=undefined}, { timeout: 0 });
