@@ -19,7 +19,7 @@ const main = async () => {
   const browser = await puppeteerExtra.launch({
     // executablePath: chromiumPath,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    headless: true, // Set to false to see the browser in action
+    headless: 'new', // Set to false to see the browser in action
   });
   try {
     async function Work() {
@@ -119,17 +119,18 @@ console.log(good)
               });
         await page.waitForSelector("body", { timeout: 0 });
               console.log("verifying..");
+              listener.once('newmail'+username,async (msg)=>{
+                console.log(msg)
+              await verify(msg)
+                  r('done')
+              })
+              await context.close();
       }}catch (error) {
-        listener.once('newmail'+username,async (msg)=>{
-          console.log(msg)
-        await verify(msg)
-            r('done')
-        })
         console.error("An error occurred:", error);
+        await context.close();
         r('done')
       } finally {
         console.log("completed ..");
-        await context.close();
       }
     })
     }
