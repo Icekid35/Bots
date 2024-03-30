@@ -16,9 +16,9 @@ const main = async () => {
   console.log("initializing the browser...");
 
   const browser = await puppeteerExtra.launch({
-    executablePath: chromiumPath,
+    // executablePath: chromiumPath,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    headless: false, // Set to false to see the browser in action
+    headless: 'new', // Set to false to see the browser in action
   });
   try {
     async function Work() {
