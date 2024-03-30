@@ -19,7 +19,7 @@ const main = async () => {
   const browser = await puppeteerExtra.launch({
     // executablePath: chromiumPath,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    headless: "new", // Set to false to see the browser in action
+    headless: true, // Set to false to see the browser in action
   });
   try {
     async function Work() {
@@ -81,7 +81,7 @@ console.log(good)
         console.log(username)
         console.log("page loading...");
         await page.goto("https://paramgaming.com/?referCode=DE356F8CFA#/signup", {
-          waitUntil: "domcontentloaded",
+          // waitUntil: "domcontentloaded",
           timeout: 0,
         });
         const imageURLR = await page.screenshot();
@@ -97,7 +97,7 @@ console.log(good)
       })
       
         console.log("page loaded waiting name selector...");
-        await page.waitForSelector("#email", { timeout: 0 });
+        await page.waitForFunction(()=>{document.querySelector("#email")!=undefined}, { timeout: 0 });
         console.log('working...')
         // await page.type("#email",username);
         // await page.type("#password", "Bellohabib682@");
@@ -136,10 +136,13 @@ console.log(good)
 
     const count = 40;
     for(let i=0;i<=500;i++) {
-      
+      try{
       await Work();
 
       console.log("save to exit..."+i);
+      }catch(err){
+        console.log(err)
+      }
     }
   } catch (err) {
     console.log(err);
